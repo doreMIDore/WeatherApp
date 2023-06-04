@@ -1,5 +1,7 @@
 package com.doremidore.weatherapp.model.WeatherModelsClass
 
+import android.graphics.drawable.PictureDrawable
+
 data class Day(
     var _source: String,
     var temp_min: Int,
@@ -26,4 +28,5 @@ data class Day(
     var daytime: String,
     var polar: Boolean,
     var fresh_snow_mm: Int,
+    var iconDrawable: PictureDrawable
 )

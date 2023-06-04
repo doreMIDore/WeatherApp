@@ -2,4 +2,28 @@
     <string name="app_name">WeatherApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="clear">clear</string>
+    <string name="partly_cloudy">partly cloudy</string>
+    <string name="cloudy">cloudy</string>
+    <string name="overcast">overcast</string>
+    <string name="drizzle">drizzle</string>
+    <string name="light_rain">light rain </string>
+    <string name="rain">rain</string>
+    <string name="moderate_rain">moderate rain</string>
+    <string name="heavy_rain">heavy rain </string>
+    <string name="continuous_heavy_rain">continuous heavy rain</string>
+    <string name="showers">showers</string>
+    <string name="wet_snow">wet snow</string>
+    <string name="light_snow">light snow </string>
+    <string name="snow">snow</string>
+    <string name="snow_showers">snow showers</string>
+    <string name="hail">hail</string>
+    <string name="thunderstorm">thunderstorm</string>
+    <string name="thunderstorm_with_rain">thunderstorm with rain</string>
+    <string name="thunderstorm_with_hail">thunderstorm with hail</string>
+    <string name="unknown_condition">unknown condition</string>
+    <string name="hours">hours</string>
+    <string name="days">days</string>
+
 </resources>

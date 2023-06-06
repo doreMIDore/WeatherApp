@@ -20,7 +20,7 @@ import com.doremidore.weatherapp.model.WeatherModelsClass.Forecast
 import com.doremidore.weatherapp.isPermissionGranted
 import com.doremidore.weatherapp.presenter.PresenterInterface
 import com.doremidore.weatherapp.presenter.WeatherPresenter
-import com.doremidore.weatherapp.Utils.translateCondition
+import com.doremidore.weatherapp.utils.translateCondition
 import com.google.android.gms.location.CurrentLocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

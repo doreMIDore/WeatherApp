@@ -1,4 +1,4 @@
-package com.doremidore.weatherapp.Utils
+package com.doremidore.weatherapp.utils
 
 import android.content.res.Resources
 import com.doremidore.weatherapp.R

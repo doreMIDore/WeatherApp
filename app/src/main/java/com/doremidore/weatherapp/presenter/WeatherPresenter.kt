@@ -1,7 +1,7 @@
 package com.doremidore.weatherapp.presenter
 
-import com.doremidore.weatherapp.Utils.convertDateToCustomFormat
-import com.doremidore.weatherapp.Utils.translateCondition
+import com.doremidore.weatherapp.utils.convertDateToCustomFormat
+import com.doremidore.weatherapp.utils.translateCondition
 import com.doremidore.weatherapp.model.Repository.WeatherRepository
 import com.doremidore.weatherapp.model.Repository.WeatherRepositoryInterface
 import com.doremidore.weatherapp.model.WeatherModel

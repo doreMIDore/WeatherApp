@@ -1,4 +1,4 @@
-package com.doremidore.weatherapp.Utils
+package com.doremidore.weatherapp.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

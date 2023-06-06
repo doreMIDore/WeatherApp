@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/cardview_background"
-    tools:context=".view.fragments.WeatherFragment">
+    android:background="@drawable/cardview_background">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -83,7 +82,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="serif"
-                android:text="Влажность"
+                android:text="@string/humidity"
                 android:textColor="#EDEDED"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/tvWetValue"
@@ -95,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="serif"
-                android:text="90%"
                 android:textColor="#EDEDED"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvWet"
@@ -122,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="serif"
-                android:text="Скорость ветра"
+                android:text="@string/wind_speed"
                 android:textColor="#EDEDED"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/tvWet"
@@ -135,7 +133,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="serif"
-                android:text="Температура воды"
+                android:text="@string/water_temp"
                 android:textColor="#EDEDED"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"

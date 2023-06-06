@@ -2,11 +2,9 @@ package com.doremidore.weatherapp.model.Repository
 
 import android.graphics.drawable.PictureDrawable
 import com.caverock.androidsvg.SVG
-import com.doremidore.weatherapp.Utils.translateCondition
 import com.doremidore.weatherapp.model.ImageInterface
 import com.doremidore.weatherapp.model.WeatherDataInterface
 import com.doremidore.weatherapp.model.WeatherModel
-import com.doremidore.weatherapp.view.activity.WeatherActivity
 
 class WeatherRepository(private val data: WeatherDataInterface,
                         private val imageData : ImageInterface) : WeatherRepositoryInterface {

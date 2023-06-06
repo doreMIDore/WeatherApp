@@ -25,5 +25,7 @@
     <string name="unknown_condition">unknown condition</string>
     <string name="hours">hours</string>
     <string name="days">days</string>
-
+    <string name="humidity">humidity</string>
+    <string name="wind_speed">wind_speed</string>
+    <string name="water_temp">water_temp</string>
 </resources>

@@ -25,5 +25,9 @@
     <string name="unknown_condition">Неизвестные погодные условия</string>
     <string name="hours">Часы</string>
     <string name="days">Дни</string>
+    <string name="humidity">Влажность</string>
+    <string name="wind_speed">Скорость ветра</string>
+    <string name="water_temp">Температура воды</string>
+
 
 </resources>

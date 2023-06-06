@@ -1,58 +1,63 @@
 package com.doremidore.weatherapp.view.activity
 
 import android.Manifest
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.drawable.PictureDrawable
 import android.os.Bundle
-import android.os.Debug
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.doremidore.weatherapp.Utils.translateCondition
-import com.doremidore.weatherapp.adapter.ListViewAdapter
+import com.doremidore.weatherapp.adapter.RecyclerViewAdapter
 import com.doremidore.weatherapp.databinding.ActivityWeatherBinding
 import com.doremidore.weatherapp.model.WeatherModel
 import com.doremidore.weatherapp.model.WeatherModelsClass.Forecast
-import com.doremidore.weatherapp.model.isPermissionGranted
+import com.doremidore.weatherapp.isPermissionGranted
 import com.doremidore.weatherapp.presenter.PresenterInterface
 import com.doremidore.weatherapp.presenter.WeatherPresenter
+import com.doremidore.weatherapp.Utils.translateCondition
 import com.google.android.gms.location.CurrentLocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
 
-
 class WeatherActivity : AppCompatActivity(), WeatherActivityInterface {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityWeatherBinding
     private lateinit var pLauncher: ActivityResultLauncher<String>
-    private lateinit var adapter: ListViewAdapter
+    private lateinit var adapter: RecyclerViewAdapter
 
-    private var weatherData: WeatherModel? = null
     private var presenter: PresenterInterface? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //Debug.waitForDebugger()
         super.onCreate(savedInstanceState)
+
         binding = ActivityWeatherBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         checkPermission()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         presenter = WeatherPresenter(this)
-        getLocation()
 
     }
 
     override fun onResume() {
         super.onResume()
+        getLocation()
+
     }
 
-    private fun getLocation(){
+    /**
+     * Получение местоположения и выполение
+     * [WeatherPresenter.processWeatherData]
+     *
+     * */
+    private fun getLocation() {
         val cancellationToken = CancellationTokenSource()
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -62,39 +67,38 @@ class WeatherActivity : AppCompatActivity(), WeatherActivityInterface {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            return
-        }
-        val currentLocationRequest = CurrentLocationRequest.Builder().build()
-        fusedLocationClient
-            .getCurrentLocation(currentLocationRequest, cancellationToken.token)
-            .addOnCompleteListener {
-                if (it.result?.latitude == null){
-                    Toast.makeText(this, "Включите местоположение на устройстве для " +
-                            "отображения корректных данных о погоде", Toast.LENGTH_LONG).show()
-                }
-                presenter?.loadDataWeather(it.result?.latitude?.toString() ?: "55.751244",
-                    it.result?.longitude?.toString() ?: "37.618423")
-            }
-            .addOnFailureListener {
-                presenter?.loadDataWeather("55.751244", "37.618423")
-            }
-
-    }
-
-
-    override fun onWeatherDataLoaded(weatherData: WeatherModel?) {
-        if (weatherData != null) {
-            this.weatherData = weatherData
-            // Use the weatherData or update the UI
+            presenter?.processWeatherData("55.751244", "37.618423")
         } else {
-            // Handle the case when weather data is not available or an error occurred
+            val currentLocationRequest = CurrentLocationRequest.Builder().build()
+            fusedLocationClient
+                .getCurrentLocation(currentLocationRequest, cancellationToken.token)
+                .addOnCompleteListener {
+                    if (it.result?.latitude == null) {
+                        Toast.makeText(
+                            this, "Включите местоположение на устройстве для " +
+                                    "отображения корректных данных о погоде", Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    presenter?.processWeatherData(
+                        it.result?.latitude?.toString() ?: "55.751244",
+                        it.result?.longitude?.toString() ?: "37.618423"
+                    )
+                }
+                .addOnFailureListener {
+                    presenter?.processWeatherData("55.751244", "37.618423")
+                }
         }
     }
 
 
     private fun permissionListener() {
         pLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            Toast.makeText(this, "Предоставьте разрешение о местоположении устройства", Toast.LENGTH_LONG).show()
+            if (!it)
+                Toast.makeText(
+                    this,
+                    "Предоставьте разрешение о местоположении устройства",
+                    Toast.LENGTH_LONG
+                ).show()
         }
     }
 
@@ -106,18 +110,22 @@ class WeatherActivity : AppCompatActivity(), WeatherActivityInterface {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun fillDataWeatherCard(weatherData: WeatherModel?) =
         with(binding) {
             tvCity.text = weatherData?.geo_object?.locality?.name
             val condition = translateCondition(
                 weatherData?.fact?.condition
-                    ?: "Неизвестые погодные условия", this@WeatherActivity
+                    ?: "Неизвестые погодные условия", resources
             )
 
             tvCondition.text = condition
-            //ivWeather.setImageDrawable(drawable)
             tvTemp.text = weatherData?.fact?.temp.toString() + "°C"
-            tvWaterValue.text = weatherData?.fact?.temp_water.toString() + "°C"
+            if (weatherData?.fact?.temp_water == 0) {
+                tvWaterTemp.visibility = View.INVISIBLE
+                tvWaterValue.visibility = View.INVISIBLE
+            } else
+                tvWaterValue.text = weatherData?.fact?.temp_water.toString() + "°C"
             tvWindValue.text = weatherData?.fact?.wind_speed.toString() + " м/с"
             tvWetValue.text = weatherData?.fact?.humidity.toString() + "%"
         }
@@ -127,15 +135,22 @@ class WeatherActivity : AppCompatActivity(), WeatherActivityInterface {
 
     override fun initRcView(weatherList: List<Forecast>?) = with(binding) {
         rvActivity.layoutManager = LinearLayoutManager(this@WeatherActivity)
-        adapter = ListViewAdapter()
+        adapter = RecyclerViewAdapter()
         rvActivity.adapter = adapter
         adapter.submitList(weatherList)
     }
 
-    override fun getContext(): Context {
-        return applicationContext
+
+    override fun getRes(): Resources {
+        return resources
+    }
+
+
+    override fun showErrorNetwork() {
+        Toast.makeText(this, "Проверьте интернет подключение", Toast.LENGTH_LONG).show()
     }
 
 }
+
 
 

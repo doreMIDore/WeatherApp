@@ -1,7 +1,6 @@
 package com.doremidore.weatherapp.adapter
 
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.PictureDrawable
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,22 +8,22 @@ import androidx.recyclerview.widget.DiffUtil
 import com.doremidore.weatherapp.R
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.doremidore.weatherapp.Utils.convertDateToCustomFormat
 import com.doremidore.weatherapp.databinding.ListViewItemBinding
-import com.doremidore.weatherapp.model.WeatherModel
 import com.doremidore.weatherapp.model.WeatherModelsClass.Forecast
 
 
-class ListViewAdapter: ListAdapter<Forecast, ListViewAdapter.Holder>(Comporator()){
+class RecyclerViewAdapter: ListAdapter<Forecast, RecyclerViewAdapter.Holder>(Comporator()){
 
     class Holder(view: View) : RecyclerView.ViewHolder(view){
             private val binding = ListViewItemBinding.bind(view)
+
+            @SuppressLint("SetTextI18n")
             fun bind(item: Forecast) = with(binding){
                 tvItemDay.text =  item.date
                 tvItemCondition.text = item.parts.day.condition
                 tvItemDayTemp.text = item.parts.day.temp_avg.toString() + "°C"
                 tvItemNightTemp.text = item.parts.night.temp_avg.toString() + "°C"
-                ivItemPrecipitation.setImageDrawable(item.parts.day.iconDrawable)  //TODO ImageView
+                ivItemPrecipitation.setImageDrawable(item.parts.day.iconDrawable)
             }
         }
 
